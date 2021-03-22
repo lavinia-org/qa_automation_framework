@@ -5,7 +5,6 @@ import constants.ConstantsCredentials;
 import constants.ConstantsMessages;
 import constants.ConstantsURLs;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import pages.BasePage;
 import pages.LoginPage;
@@ -26,10 +25,10 @@ public class PositiveLoginTest extends BaseTest {
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
 
-        Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
-        Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
+        Assert.assertEquals(myAccountPage.getCurrentUrl(), ConstantsURLs.myAccountURL);
+        Assert.assertEquals(myAccountPage.getCurrentPageTitle(), ConstantsMessages.myAccountTitle);
         Assert.assertTrue(basePage.isSignOutLinkVisible());
-        Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
+        Assert.assertEquals(basePage.getUsername(), ConstantsMessages.validUsername);
     }
 
     @Test
@@ -45,9 +44,9 @@ public class PositiveLoginTest extends BaseTest {
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
 
-        Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
-        Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
+        Assert.assertEquals(myAccountPage.getCurrentUrl(), ConstantsURLs.myAccountURL);
+        Assert.assertEquals(myAccountPage.getCurrentPageTitle(), ConstantsMessages.myAccountTitle);
         Assert.assertTrue(basePage.isSignOutLinkVisible());
-        Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
+        Assert.assertEquals(basePage.getUsername(), ConstantsMessages.validUsername);
     }
 }
