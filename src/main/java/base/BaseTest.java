@@ -29,6 +29,7 @@ public class BaseTest {
     @AfterMethod (alwaysRun = true)
     public void tearDown() {
         driver.quit();
+        log.info("Driver closed");
     }
 
     public void openURL(String URL) {
