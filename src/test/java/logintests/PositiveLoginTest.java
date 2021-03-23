@@ -25,10 +25,13 @@ public class PositiveLoginTest extends BaseTest {
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
 
-        Assert.assertEquals(myAccountPage.getCurrentUrl(), ConstantsURLs.myAccountURL);
-        Assert.assertEquals(myAccountPage.getCurrentPageTitle(), ConstantsMessages.myAccountTitle);
+        Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
+        Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
+        log.info("User is on My Account Page");
+        Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
+        log.info("Correct username is displayed in header");
         Assert.assertTrue(basePage.isSignOutLinkVisible());
-        Assert.assertEquals(basePage.getUsername(), ConstantsMessages.validUsername);
+        log.info("Sign out button is displayed in header");
     }
 
     @Test
@@ -44,9 +47,12 @@ public class PositiveLoginTest extends BaseTest {
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
 
-        Assert.assertEquals(myAccountPage.getCurrentUrl(), ConstantsURLs.myAccountURL);
-        Assert.assertEquals(myAccountPage.getCurrentPageTitle(), ConstantsMessages.myAccountTitle);
+        Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
+        Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
+        log.info("User is on My Account Page");
+        Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
+        log.info("Correct username is displayed in header");
         Assert.assertTrue(basePage.isSignOutLinkVisible());
-        Assert.assertEquals(basePage.getUsername(), ConstantsMessages.validUsername);
+        log.info("Sign out button is displayed in header");
     }
 }
