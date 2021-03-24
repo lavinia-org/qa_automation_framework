@@ -15,6 +15,7 @@ public class BasePage {
     private By headerUsernameLink = By.className("account");
     private By headerContactUsLink = By.id("contact-link");
     private By headerLogo = By.id("header_logo");
+    private By pageH1 = By.className("page-heading");
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -22,9 +23,11 @@ public class BasePage {
 
     /**
      * Clicks on Sign In link from page header
+     * @return LoginPage
      */
-    public void clickOnSignInLink() {
+    public LoginPage clickOnSignInLink() {
         click(headerSignInLink);
+        return new LoginPage(driver);
     }
 
     /**
@@ -91,6 +94,14 @@ public class BasePage {
      */
     public String getCurrentPageTitle() {
         return driver.getTitle();
+    }
+
+    /**
+     * Get H1 of current page
+     * @return String H1
+     */
+    public String getCurrentPageH1() {
+        return find(pageH1).getText();
     }
 
     /**
