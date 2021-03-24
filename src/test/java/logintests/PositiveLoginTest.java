@@ -16,11 +16,11 @@ public class PositiveLoginTest extends BaseTest {
     public void logInTestUsingSignInButton() {
         log.info("Starting Log In test using Sign in button");
 
-        BasePage basePage = new BasePage(driver);
+        BasePage basePage = new BasePage(driver, log);
         openURL(ConstantsURLs.baseURL);
         basePage.clickOnSignInLink();
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver, log);
         MyAccountPage myAccountPage = loginPage.logInUserSignInBtn(ConstantsCredentials.validEmail,
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
@@ -38,11 +38,11 @@ public class PositiveLoginTest extends BaseTest {
     public void logInTestUsingEnterKey() {
         log.info("Starting Log In test using Enter key");
 
-        BasePage basePage = new BasePage(driver);
+        BasePage basePage = new BasePage(driver, log);
         openURL(ConstantsURLs.baseURL);
         basePage.clickOnSignInLink();
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver, log);
         MyAccountPage myAccountPage = loginPage.logInUserEnterKey(ConstantsCredentials.validEmail,
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");

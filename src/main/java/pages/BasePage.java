@@ -1,5 +1,6 @@
 package pages;
 
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -9,6 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 public class BasePage {
 
     protected WebDriver driver;
+    protected Logger log;
 
     private By headerSignInLink = By.className("login");
     private By headerSignOutLink = By.className("logout");
@@ -17,8 +19,9 @@ public class BasePage {
     private By headerLogo = By.id("header_logo");
     private By pageH1 = By.className("page-heading");
 
-    public BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver, Logger log) {
         this.driver = driver;
+        this.log = log;
     }
 
     /**
@@ -26,8 +29,9 @@ public class BasePage {
      * @return LoginPage
      */
     public LoginPage clickOnSignInLink() {
+        log.info("Clicking on SignIn link");
         click(headerSignInLink);
-        return new LoginPage(driver);
+        return new LoginPage(driver, log);
     }
 
     /**
@@ -50,6 +54,7 @@ public class BasePage {
      * Clicks on Sign out link from header
      */
     public void signOutUser() {
+        log.info("Clicking on SignOut link");
         find(headerSignOutLink).click();
     }
 
@@ -110,6 +115,7 @@ public class BasePage {
      * @param key
      */
     protected void pressKey(By locator, Keys key) {
+        log.info("Pressing " + key.name());
         find(locator).sendKeys(key);
     }
 
@@ -118,6 +124,7 @@ public class BasePage {
      * @param element
      */
     protected void hoverOverElement(WebElement element) {
+        log.info("Hover over " + element);
         Actions action = new Actions(driver);
         action.moveToElement(element).build().perform();
     }

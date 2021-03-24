@@ -33,7 +33,9 @@ public class BaseTest {
     }
 
     public void openURL(String URL) {
+        log.info("Opening page " + URL);
         driver.get(URL);
+        log.info("Page opened!");
     }
 
     /** Get browser name, browser version and OS */

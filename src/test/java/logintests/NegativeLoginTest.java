@@ -26,7 +26,7 @@ public class NegativeLoginTest extends BaseTest {
 
         log.info("Starting negativeLogInTest #" + no + " for " + description);
 
-        BasePage basePage = new BasePage(driver);
+        BasePage basePage = new BasePage(driver, log);
         openURL(ConstantsURLs.baseURL);
 
         LoginPage loginPage = basePage.clickOnSignInLink();
