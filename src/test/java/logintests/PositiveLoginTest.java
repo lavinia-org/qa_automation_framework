@@ -27,7 +27,7 @@ public class PositiveLoginTest extends BaseTest {
 
         Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
         Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
-        log.info("User is on My Account Page");
+        log.info("User is on " + myAccountPage.getCurrentPageH1() + " page");
         Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
         log.info("Correct username is displayed in header");
         Assert.assertTrue(basePage.isSignOutLinkVisible());
@@ -49,7 +49,7 @@ public class PositiveLoginTest extends BaseTest {
 
         Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
         Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
-        log.info("User is on My Account Page");
+        log.info("User is on " + myAccountPage.getCurrentPageH1() + " page");
         Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
         log.info("Correct username is displayed in header");
         Assert.assertTrue(basePage.isSignOutLinkVisible());

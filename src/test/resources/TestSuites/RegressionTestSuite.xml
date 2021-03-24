@@ -1,8 +1,14 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="PositiveLogInTestSuite" verbose="1">
+<suite name="RegressionTestSuite" verbose="1">
 
     <test name="PositiveLogInTest">
+        <classes>
+            <class name="logintests.PositiveLoginTest" />
+        </classes>
+    </test>
+
+    <test name="NegativeLogInTest">
         <classes>
             <class name="logintests.NegativeLoginTest" />
         </classes>
