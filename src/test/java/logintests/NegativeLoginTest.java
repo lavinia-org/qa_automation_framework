@@ -30,7 +30,7 @@ public class NegativeLoginTest extends BaseTest {
         openURL(ConstantsURLs.baseURL);
 
         LoginPage loginPage = basePage.clickOnSignInLink();
-        loginPage.negativeLogIn(email, password);
+        loginPage.logInUserSignInBtn(email, password);
 
         String message = loginPage.getLogInErrorMessageText();
         Assert.assertTrue(message.contains(expectedErrorMessage), "Message doesn't contain expected text.");
