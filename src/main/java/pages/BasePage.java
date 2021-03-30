@@ -1,5 +1,6 @@
 package pages;
 
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -9,22 +10,28 @@ import org.openqa.selenium.interactions.Actions;
 public class BasePage {
 
     protected WebDriver driver;
+    protected Logger log;
 
     private By headerSignInLink = By.className("login");
     private By headerSignOutLink = By.className("logout");
     private By headerUsernameLink = By.className("account");
     private By headerContactUsLink = By.id("contact-link");
     private By headerLogo = By.id("header_logo");
+    private By pageH1 = By.className("page-heading");
 
-    public BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver, Logger log) {
         this.driver = driver;
+        this.log = log;
     }
 
     /**
      * Clicks on Sign In link from page header
+     * @return LoginPage
      */
-    public void clickOnSignInLink() {
+    public LoginPage clickOnSignInLink() {
+        log.info("Clicking on SignIn link");
         click(headerSignInLink);
+        return new LoginPage(driver, log);
     }
 
     /**
@@ -47,6 +54,7 @@ public class BasePage {
      * Clicks on Sign out link from header
      */
     public void signOutUser() {
+        log.info("Clicking on SignOut link");
         find(headerSignOutLink).click();
     }
 
@@ -94,11 +102,20 @@ public class BasePage {
     }
 
     /**
+     * Get H1 of current page
+     * @return String H1
+     */
+    public String getCurrentPageH1() {
+        return find(pageH1).getText();
+    }
+
+    /**
      * Press Key on locator
      * @param locator
      * @param key
      */
     protected void pressKey(By locator, Keys key) {
+        log.info("Pressing " + key.name());
         find(locator).sendKeys(key);
     }
 
@@ -107,6 +124,7 @@ public class BasePage {
      * @param element
      */
     protected void hoverOverElement(WebElement element) {
+        log.info("Hover over " + element);
         Actions action = new Actions(driver);
         action.moveToElement(element).build().perform();
     }

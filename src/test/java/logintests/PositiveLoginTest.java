@@ -16,37 +16,43 @@ public class PositiveLoginTest extends BaseTest {
     public void logInTestUsingSignInButton() {
         log.info("Starting Log In test using Sign in button");
 
-        BasePage basePage = new BasePage(driver);
+        BasePage basePage = new BasePage(driver, log);
         openURL(ConstantsURLs.baseURL);
         basePage.clickOnSignInLink();
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver, log);
         MyAccountPage myAccountPage = loginPage.logInUserSignInBtn(ConstantsCredentials.validEmail,
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
 
-        Assert.assertEquals(myAccountPage.getCurrentUrl(), ConstantsURLs.myAccountURL);
-        Assert.assertEquals(myAccountPage.getCurrentPageTitle(), ConstantsMessages.myAccountTitle);
+        Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
+        Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
+        log.info("User is on " + myAccountPage.getCurrentPageH1() + " page");
+        Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
+        log.info("Correct username is displayed in header");
         Assert.assertTrue(basePage.isSignOutLinkVisible());
-        Assert.assertEquals(basePage.getUsername(), ConstantsMessages.validUsername);
+        log.info("Sign out button is displayed in header");
     }
 
     @Test
     public void logInTestUsingEnterKey() {
         log.info("Starting Log In test using Enter key");
 
-        BasePage basePage = new BasePage(driver);
+        BasePage basePage = new BasePage(driver, log);
         openURL(ConstantsURLs.baseURL);
         basePage.clickOnSignInLink();
 
-        LoginPage loginPage = new LoginPage(driver);
+        LoginPage loginPage = new LoginPage(driver, log);
         MyAccountPage myAccountPage = loginPage.logInUserEnterKey(ConstantsCredentials.validEmail,
                 ConstantsCredentials.validPassword);
         log.info("User successfully logged in");
 
-        Assert.assertEquals(myAccountPage.getCurrentUrl(), ConstantsURLs.myAccountURL);
-        Assert.assertEquals(myAccountPage.getCurrentPageTitle(), ConstantsMessages.myAccountTitle);
+        Assert.assertEquals(ConstantsURLs.myAccountURL, myAccountPage.getCurrentUrl());
+        Assert.assertEquals(ConstantsMessages.myAccountTitle, myAccountPage.getCurrentPageTitle());
+        log.info("User is on " + myAccountPage.getCurrentPageH1() + " page");
+        Assert.assertEquals(ConstantsMessages.validUsername, basePage.getUsername());
+        log.info("Correct username is displayed in header");
         Assert.assertTrue(basePage.isSignOutLinkVisible());
-        Assert.assertEquals(basePage.getUsername(), ConstantsMessages.validUsername);
+        log.info("Sign out button is displayed in header");
     }
 }

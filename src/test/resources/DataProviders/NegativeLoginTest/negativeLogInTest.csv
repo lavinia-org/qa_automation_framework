@@ -1,0 +1,6 @@
+no,email,password,expectedMessage,description
+1,incorrectemail@test.com,password,Authentication failed.,incorrect email
+2,qatestaccount@test.com,incorrectpassword,Authentication failed.,incorrect password
+3,incorrectemail@test.com,incorrectpassword,Authentication failed.,incorrect email and password
+4,,password,An email address required.,empty username
+5,qatestaccount@test.com,,Password is required.,empty password
