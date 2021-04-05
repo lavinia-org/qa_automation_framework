@@ -14,7 +14,7 @@ public class HomePage extends BasePage {
     }
 
     public void addProductToCart() {
-        log.info("Adding product to cart: " + getImageTitle(imageForProductSKUDemo1));
-        addProductToCartFromGrid(imageForProductSKUDemo1, addToCartBtnForProductSKUDemo1);
+        log.info("Adding product to cart: " + getTitleAttribute(imageForProductSKUDemo1));
+        addProductToCartFromGridView(imageForProductSKUDemo1, addToCartBtnForProductSKUDemo1);
     }
 }

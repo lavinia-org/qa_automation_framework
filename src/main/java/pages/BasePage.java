@@ -9,6 +9,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BasePage {
@@ -29,10 +30,14 @@ public class BasePage {
     private By headerCartBlockProduct1Name = By.cssSelector(".shopping_cart .first_item .product-name > a");
     private By headerCartBlockProductSize = By.cssSelector(".shopping_cart .product-atributes > a");
     private By headerCartRows = By.cssSelector(".products >dt");
+    private By headerCartItems = By.cssSelector(".cart_block_list .products a.cart-images img");
 
     private By productAddedModalH2 = By.cssSelector(".layer_cart_product h2:nth-child(2)");
     private By productAddedModalProductName = By.cssSelector(".layer_cart_product .product-name");
     private By productAddedModalContinueShoppingBtn = By.cssSelector(".clearfix .continue");
+
+    private By mainMenuWomen = By.cssSelector(".menu-content >li:nth-child(1) a");
+    private By listView = By.id("list");
 
     public BasePage(WebDriver driver, Logger log) {
         this.driver = driver;
@@ -41,6 +46,7 @@ public class BasePage {
 
     /**
      * Find element using given locator
+     *
      * @param locator
      * @return Webelement
      */
@@ -50,6 +56,7 @@ public class BasePage {
 
     /**
      * Click on element with given locator
+     *
      * @param locator
      */
     protected void click(By locator) {
@@ -58,6 +65,7 @@ public class BasePage {
 
     /**
      * Clears input and types given text into element with given locator
+     *
      * @param text
      * @param locator
      */
@@ -68,6 +76,7 @@ public class BasePage {
 
     /**
      * Get URL of current page from browser
+     *
      * @return URL String
      */
     public String getCurrentUrl() {
@@ -75,7 +84,8 @@ public class BasePage {
     }
 
     /**
-     *  Get title of current page
+     * Get title of current page
+     *
      * @return String title
      */
     public String getCurrentPageTitle() {
@@ -84,6 +94,7 @@ public class BasePage {
 
     /**
      * Get H1 of current page
+     *
      * @return String H1
      */
     public String getCurrentPageH1() {
@@ -92,6 +103,7 @@ public class BasePage {
 
     /**
      * Press Key on locator
+     *
      * @param locator
      * @param key
      */
@@ -102,6 +114,7 @@ public class BasePage {
 
     /**
      * Perform mouse hover over element
+     *
      * @param element
      */
     protected void hoverOverElement(By element) {
@@ -109,6 +122,11 @@ public class BasePage {
         action.moveToElement(find(element)).build().perform();
     }
 
+    /**
+     * Waits for By locator's visibility
+     * @param locator
+     * @param defaultTimeout
+     */
     public void waitForVisibility(By locator, int defaultTimeout) {
         WebDriverWait wait = new WebDriverWait(driver, defaultTimeout);
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
@@ -118,21 +136,19 @@ public class BasePage {
         find(locator).isDisplayed();
     }
 
-    protected void addProductToCartFromGrid(By hoverLocator, By clickLocator) {
+    protected void addProductToCartFromGridView(By hoverLocator, By clickLocator) {
         waitForVisibility(hoverLocator, 10);
         hoverOverElement(hoverLocator);
         click(clickLocator);
     }
 
-    public String getImageTitle(By locator) {
-        WebElement element = find(locator);
-        String imageTitle = element.getAttribute("title");
-        return imageTitle;
+    protected void addProductToCartFromListView(By locator) {
+        click(locator);
     }
 
     protected void waitForModalContentToBeDisplayed(By locator) {
         log.info("Waiting for modal to be displayed...");
-        waitForVisibility(locator,10);
+        waitForVisibility(locator, 10);
         checkIfElementIsDisplayed(locator);
         log.info("Modal content displayed!");
     }
@@ -147,10 +163,41 @@ public class BasePage {
         return elementTitle;
     }
 
+    protected String getAltAttribute(WebElement element) {
+        String elementTitle = element.getAttribute("alt");
+        return elementTitle;
+    }
+
+    public void changeLayoutToListView() {
+        log.info("Switching to List View");
+        click(listView);
+    }
+
+    /**
+     * Gets all cart items names and adds them to a list
+     * Also prints out a log.info with every product name that the cart contains
+     * @return list of products' names
+     */
+    public List<String> getCartItems() {
+        List<WebElement> cartList = driver.findElements(headerCartItems);
+        List<String> cartProducts = new ArrayList();
+
+        for (WebElement row : cartList) {
+            String productName = getAltAttribute(row);
+            cartProducts.add(productName);
+        }
+
+        for (String product : cartProducts) {
+            log.info("Shopping cart contains: " + product);
+        }
+        return cartProducts;
+    }
+
     //HEADER RELATED METHODS
 
     /**
      * Clicks on Sign In link from page header
+     *
      * @return LoginPage
      */
     public LoginPage clickOnSignInLink() {
@@ -161,6 +208,7 @@ public class BasePage {
 
     /**
      * Checks if Sign Out link is displayed after user logs in
+     *
      * @return boolean
      */
     public boolean isSignOutLinkVisible() {
@@ -169,6 +217,7 @@ public class BasePage {
 
     /**
      * Gets username from header
+     *
      * @return String username text
      */
     public String getUsername() {
@@ -185,11 +234,12 @@ public class BasePage {
 
     /**
      * This method checks if 'Product' or 'Products' is displayed near cart icon when user has items in cart
-     * @return  String number of cart products + 'Product' / 'Products' text
+     *
+     * @return String number of cart products + 'Product' / 'Products' text
      */
     public String getCartItemNoTxt() {
         String cartItemNoTxt;
-        if (find(headerShoppingCartProductTxt).isDisplayed()){
+        if (find(headerShoppingCartProductTxt).isDisplayed()) {
             cartItemNoTxt = getText(headerShoppingCartQuantity) + " " + getText(headerShoppingCartProductTxt);
         } else {
             cartItemNoTxt = getText(headerShoppingCartQuantity) + " " + getText(headerShoppingCartProductsTxt);
@@ -211,10 +261,16 @@ public class BasePage {
         return productSize;
     }
 
-    public int countCartItems () {
+    public int countCartRows() {
         List<WebElement> rows = driver.findElements(headerCartRows);
         int count = rows.size();
         return count;
+    }
+
+    public WomenPage openWomenPage() {
+        log.info("Opening Women page");
+        click(mainMenuWomen);
+        return new WomenPage(driver, log);
     }
 
     //MODAL RELATED METHODS

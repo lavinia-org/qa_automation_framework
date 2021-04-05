@@ -2,7 +2,6 @@ package logintests;
 
 import base.BaseTest;
 import base.CsvDataProviders;
-import constants.ConstantsCredentials;
 import constants.ConstantsMessages;
 import constants.ConstantsURLs;
 import org.testng.Assert;
@@ -35,7 +34,7 @@ public class NegativeLoginTest extends BaseTest {
         String message = loginPage.getLogInErrorMessageText();
         Assert.assertTrue(message.contains(expectedErrorMessage), "Message doesn't contain expected text.");
         log.info("Expected error message is displayed for this negative scenario");
-        Assert.assertEquals(loginPage.getCurrentPageH1(), ConstantsMessages.loginH1);
+        Assert.assertEquals(loginPage.getCurrentPageH1(), ConstantsMessages.loginPageH1);
         log.info("User is on " + loginPage.getCurrentPageH1() + " page");
     }
 }

@@ -14,4 +14,10 @@
         </classes>
     </test>
 
+    <test name="AddProductToCartTest">
+        <classes>
+            <class name="addproducttocarttests.AddProductToCartTest" />
+        </classes>
+    </test>
+
 </suite>
