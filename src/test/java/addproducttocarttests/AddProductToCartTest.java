@@ -12,8 +12,8 @@ import pages.WomenPage;
 public class AddProductToCartTest extends BaseTest {
 
     @Test
-    public void addProductToCartFromHomepage() {
-        log.info("Starting Add Product To Cart from Homepage Test");
+    public void addProductToCartFromGridView() {
+        log.info("Starting Add Product To Cart from Grid View Test");
 
         //Open main URL
         openURL(ConstantsURLs.baseURL);
@@ -43,8 +43,8 @@ public class AddProductToCartTest extends BaseTest {
     }
 
     @Test
-    public void addTwoProductsToCartFromWomenPage() {
-        log.info("Starting Add Product To Cart from Women Page Test");
+    public void addTwoProductsToCartFromListView() {
+        log.info("Starting Add Product To Cart from List View Test");
 
         //Open main URL
         openURL(ConstantsURLs.baseURL);
@@ -89,4 +89,42 @@ public class AddProductToCartTest extends BaseTest {
         Assert.assertEquals(basePage.countCartRows(), 2, "Incorrect number of product rows in cart");
         log.info("Expected products are displayed in Shopping cart dropdown from header: " + basePage.getCartItems());
     }
+
+    @Test
+    public void addProductToCartFromQuickView() {
+        log.info("Starting Add Product To Cart from Quick View Test");
+
+        //Open main URL
+        openURL(ConstantsURLs.baseURL);
+
+        //Open Quick View Modal
+        BasePage basePage = new BasePage(driver, log);
+        basePage.openQuickViewModalForDemo1();
+        Assert.assertEquals(basePage.getQuickViewModalDemo1H1(), ConstantsMessages.productNameSKUDemo1, "H1 does not correspond");
+
+        //Increase product quantity, choose size M and then add to cart
+        basePage.updateProductQuantity(5);
+        basePage.decreaseProductQuantity();
+        basePage.selectProductSize(1);
+        Assert.assertEquals(basePage.getSelectedProductSize(), "M");
+        basePage.addProductToCart();
+
+        //Wait for Product Added modal to be displayed and check that correct product was added to cart
+        basePage.waitForProductAddedModalToBeDisplayed();
+        Assert.assertEquals(basePage.getModalH2(), ConstantsMessages.productAddedSuccessfullyH2);
+        Assert.assertEquals(basePage.getModalProductName(), ConstantsMessages.productNameSKUDemo1);
+        log.info("Product successfully added to cart from Quick View modal: " + basePage.getModalProductName());
+
+        //Close Product Added modal and check number of items displayed in header
+        basePage.clickOnContinueShoppingBtn();
+        Assert.assertEquals(basePage.getCartItemNoTxt(), ConstantsMessages.cartItem4Products);
+        log.info("Shopping cart contains " + basePage.getCartItemNoTxt());
+
+        //Check items are displayed in shopping cart dropdown from header and size is correct
+        basePage.hoverOverShoppingCartBlock();
+        Assert.assertEquals(basePage.countCartRows(), 1, "Incorrect number of product rows in cart");
+        Assert.assertTrue(basePage.getProductSize().contains(ConstantsMessages.productSizeM));
+        log.info("Expected products are displayed in Shopping cart dropdown from header: " + basePage.getCartItems());
+    }
+
 }

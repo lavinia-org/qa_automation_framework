@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +38,19 @@ public class BasePage {
     private By productAddedModalProductName = By.cssSelector(".layer_cart_product .product-name");
     private By productAddedModalContinueShoppingBtn = By.cssSelector(".clearfix .continue");
 
+    private By quickViewFrame = By.className("fancybox-iframe");
+    private By quickViewProductSKUDemo1 = By.cssSelector("#homefeatured li:nth-child(1) a.quick-view");
+
+    private By productSKUDemo1H1 = By.cssSelector(".product .pb-center-column >h1");
+    private By addToCartBtn = By.cssSelector(".product .pb-right-column button.exclusive");
+    private By quantityField = By.id("quantity_wanted");
+    private By increaseQuantityBtn = By.cssSelector(".product .pb-right-column .button-plus");
+    private By decreaseQuantityBtn = By.cssSelector(".product .pb-right-column .button-minus");
+    private By sizeDropdown = By.id("group_1");
+
     private By mainMenuWomen = By.cssSelector(".menu-content >li:nth-child(1) a");
     private By listView = By.id("list");
+    private By imageForProductSKUDemo1 = By.cssSelector("img[title='Faded Short Sleeve T-shirts']");
 
     public BasePage(WebDriver driver, Logger log) {
         this.driver = driver;
@@ -72,6 +85,11 @@ public class BasePage {
     protected void type(String text, By locator) {
         find(locator).clear();
         find(locator).sendKeys(text);
+    }
+
+    protected void type(int i, By locator) {
+        find(locator).clear();
+        find(locator).sendKeys("" + i);
     }
 
     /**
@@ -124,6 +142,7 @@ public class BasePage {
 
     /**
      * Waits for By locator's visibility
+     *
      * @param locator
      * @param defaultTimeout
      */
@@ -144,6 +163,11 @@ public class BasePage {
 
     protected void addProductToCartFromListView(By locator) {
         click(locator);
+    }
+
+    public void addProductToCart() {
+        click(addToCartBtn);
+        log.info("Product added to cart");
     }
 
     protected void waitForModalContentToBeDisplayed(By locator) {
@@ -176,6 +200,7 @@ public class BasePage {
     /**
      * Gets all cart items names and adds them to a list
      * Also prints out a log.info with every product name that the cart contains
+     *
      * @return list of products' names
      */
     public List<String> getCartItems() {
@@ -191,6 +216,53 @@ public class BasePage {
             log.info("Shopping cart contains: " + product);
         }
         return cartProducts;
+    }
+
+    public void increaseProductQuantity() {
+        log.info("Increasing product quantity");
+        find(increaseQuantityBtn).click();
+    }
+
+    public void decreaseProductQuantity() {
+        log.info("Decreasing product quantity");
+        find(decreaseQuantityBtn).click();
+    }
+
+    public void updateProductQuantity(int quantity) {
+        log.info("Updating product quantity to: " + quantity);
+        type(quantity, quantityField);
+    }
+
+    public String getProductQuantity() {
+        waitForVisibility(quantityField, 10);
+        Assert.assertTrue(find(quantityField).isDisplayed());
+        String productQuantity = find(quantityField).getText();
+
+        return productQuantity;
+    }
+
+    public void selectProductSize(int i) {
+        log.info("Selecting option " + i + " from Size dropdown");
+        WebElement dropdownElement = find(sizeDropdown);
+
+        Select fromDropdown = new Select(dropdownElement);
+        fromDropdown.selectByIndex(i);
+    }
+
+    public void selectProductSize(String size) {
+        log.info("Selecting option " + size + "from Size dropdown");
+        WebElement dropdownElement = find(sizeDropdown);
+
+        Select fromDropdown = new Select(dropdownElement);
+        fromDropdown.selectByVisibleText(size);
+    }
+
+    public String getSelectedProductSize() {
+        WebElement dropdownElement = find(sizeDropdown);
+        Select fromDropdown = new Select(dropdownElement);
+        String selectedOption = fromDropdown.getFirstSelectedOption().getText();
+        log.info("Product size selected is: " + selectedOption);
+        return selectedOption;
     }
 
     //HEADER RELATED METHODS
@@ -273,7 +345,7 @@ public class BasePage {
         return new WomenPage(driver, log);
     }
 
-    //MODAL RELATED METHODS
+    //PRODUCT ADDED MODAL RELATED METHODS
     public void waitForProductAddedModalToBeDisplayed() {
         waitForModalContentToBeDisplayed(productAddedModalH2);
     }
@@ -292,4 +364,47 @@ public class BasePage {
         log.info("Clicking on Continue Shopping button from Product Added Modal");
         find(productAddedModalContinueShoppingBtn).click();
     }
+
+
+    //QUICK VIEW MODAL RELATED METHODS
+    public void switchToFrame(By iFrameLocator) {
+        driver.switchTo().frame(find(iFrameLocator));
+    }
+
+    public void switchToFrameQ() {
+        driver.switchTo().frame(find(quickViewFrame));
+    }
+
+    /**
+     * Hovers over a product to show QuickView link and clicks on it
+     * Switches to QuickView iFrame and waits for H1 to be visible - checks if it is
+     *
+     * @param hoverLocator
+     * @param clickLocator
+     * @param iFrameLocator
+     * @param H1Locator
+     */
+    protected void openQuickViewModal(By hoverLocator, By clickLocator, By iFrameLocator, By H1Locator) {
+        hoverOverElement(hoverLocator);
+        click(clickLocator);
+        switchToFrame(iFrameLocator);
+        waitForVisibility(H1Locator, 10);
+        find(H1Locator).isDisplayed();
+        log.info("Opened Quick View Modal for Product: " + find(H1Locator).getText());
+    }
+
+    public void openQuickViewModalForDemo1() {
+        openQuickViewModal(imageForProductSKUDemo1, quickViewProductSKUDemo1, quickViewFrame, productSKUDemo1H1);
+    }
+
+    protected String getQuickViewModalH1(By locator) {
+        String modalH1 = find(locator).getText();
+        return modalH1;
+    }
+
+    public String getQuickViewModalDemo1H1() {
+        String modalDemo1H1 = getQuickViewModalH1(productSKUDemo1H1);
+        return modalDemo1H1;
+    }
+
 }

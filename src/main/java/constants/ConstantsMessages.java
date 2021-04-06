@@ -11,5 +11,7 @@ public class ConstantsMessages {
     public static final String productNameSKUDemo2 = "Blouse";
     public static final String cartItem1Product = "1 Product";
     public static final String cartItem2Products = "2 Products";
+    public static final String cartItem4Products = "4 Products";
     public static final String productSizeS = "S";
+    public static final String productSizeM = "M";
 }
