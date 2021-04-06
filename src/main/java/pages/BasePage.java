@@ -364,7 +364,7 @@ public class BasePage {
         return new WomenPage(driver, log);
     }
 
-    //PRODUCT ADDED MODAL RELATED METHODS
+    //PRODUCT ADDED iFRAME RELATED METHODS
     public void waitForProductAddedModalToBeDisplayed() {
         waitForModalContentToBeDisplayed(productAddedModalH2);
     }
@@ -396,12 +396,8 @@ public class BasePage {
 
 
     //QUICK VIEW MODAL RELATED METHODS
-    public void switchToFrame(By iFrameLocator) {
+    protected void switchToFrame(By iFrameLocator) {
         driver.switchTo().frame(find(iFrameLocator));
-    }
-
-    public void switchToFrameQ() {
-        driver.switchTo().frame(find(quickViewFrame));
     }
 
     /**
