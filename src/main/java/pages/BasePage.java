@@ -37,6 +37,8 @@ public class BasePage {
     private By productAddedModalH2 = By.cssSelector(".layer_cart_product h2:nth-child(2)");
     private By productAddedModalProductName = By.cssSelector(".layer_cart_product .product-name");
     private By productAddedModalContinueShoppingBtn = By.cssSelector(".clearfix .continue");
+    private By productAddedModalAttributes = By.id("layer_cart_product_attributes");
+    private By productAddedModalQuantity = By.id("layer_cart_product_quantity");
 
     private By quickViewFrame = By.className("fancybox-iframe");
     private By quickViewProductSKUDemo1 = By.cssSelector("#homefeatured li:nth-child(1) a.quick-view");
@@ -250,7 +252,7 @@ public class BasePage {
     }
 
     public void selectProductSize(String size) {
-        log.info("Selecting option " + size + "from Size dropdown");
+        log.info("Selecting option " + size + " from Size dropdown");
         WebElement dropdownElement = find(sizeDropdown);
 
         Select fromDropdown = new Select(dropdownElement);
@@ -263,6 +265,22 @@ public class BasePage {
         String selectedOption = fromDropdown.getFirstSelectedOption().getText();
         log.info("Product size selected is: " + selectedOption);
         return selectedOption;
+    }
+
+    protected void navigateToProductPage(By hoverLocator, By clickLocator) {
+        hoverOverElement(hoverLocator);
+        click(clickLocator);
+    }
+
+    protected String getProductH1(By locator) {
+        String modalH1 = find(locator).getText();
+        return modalH1;
+    }
+
+    public String getProductDemo1H1() {
+        waitForVisibility(productSKUDemo1H1, 10);
+        String modalDemo1H1 = getProductH1(productSKUDemo1H1);
+        return modalDemo1H1;
     }
 
     //HEADER RELATED METHODS
@@ -329,6 +347,7 @@ public class BasePage {
     }
 
     public String getProductSize() {
+        find(headerCartBlockProductSize).isDisplayed();
         String productSize = getText(headerCartBlockProductSize);
         return productSize;
     }
@@ -365,6 +384,16 @@ public class BasePage {
         find(productAddedModalContinueShoppingBtn).click();
     }
 
+    public String getProductAddedModalAttributes() {
+        String attributes = find(productAddedModalAttributes).getText();
+        return attributes;
+    }
+
+    public String getProductAddedModalQuantity() {
+        String quantity = find(productAddedModalQuantity).getText();
+        return quantity;
+    }
+
 
     //QUICK VIEW MODAL RELATED METHODS
     public void switchToFrame(By iFrameLocator) {
@@ -395,16 +424,6 @@ public class BasePage {
 
     public void openQuickViewModalForDemo1() {
         openQuickViewModal(imageForProductSKUDemo1, quickViewProductSKUDemo1, quickViewFrame, productSKUDemo1H1);
-    }
-
-    protected String getQuickViewModalH1(By locator) {
-        String modalH1 = find(locator).getText();
-        return modalH1;
-    }
-
-    public String getQuickViewModalDemo1H1() {
-        String modalDemo1H1 = getQuickViewModalH1(productSKUDemo1H1);
-        return modalDemo1H1;
     }
 
 }

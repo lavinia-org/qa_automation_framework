@@ -14,4 +14,5 @@ public class ConstantsMessages {
     public static final String cartItem4Products = "4 Products";
     public static final String productSizeS = "S";
     public static final String productSizeM = "M";
+    public static final String productSizeL = "L";
 }
