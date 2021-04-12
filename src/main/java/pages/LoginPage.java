@@ -1,11 +1,14 @@
 package pages;
 
+import modules.HeaderModule;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
 public class LoginPage extends BasePage {
+
+    HeaderModule headerModule = new HeaderModule(driver, log);
 
     private By emailLocator = By.id("email");
     private By passwordLocator = By.id("passwd");
@@ -15,6 +18,10 @@ public class LoginPage extends BasePage {
 
     public LoginPage(WebDriver driver, Logger log) {
         super(driver, log);
+    }
+
+    public HeaderModule getHeaderModule() {
+        return headerModule;
     }
 
     /** login user using Sign In button */

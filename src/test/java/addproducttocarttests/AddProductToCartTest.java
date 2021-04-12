@@ -5,9 +5,9 @@ import constants.ConstantsMessages;
 import constants.ConstantsURLs;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.BasePage;
 import pages.HomePage;
-import pages.WomenPage;
+import pages.CategoryPage;
+import pages.ProductDetailsPage;
 
 public class AddProductToCartTest extends BaseTest {
 
@@ -23,23 +23,25 @@ public class AddProductToCartTest extends BaseTest {
         homePage.addProductToCart();
 
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
-        BasePage basePage = new BasePage(driver, log);
-        basePage.waitForProductAddedModalToBeDisplayed();
-        Assert.assertEquals(basePage.getModalH2(), ConstantsMessages.productAddedSuccessfullyH2);
-        Assert.assertEquals(basePage.getModalProductName(), ConstantsMessages.productNameSKUDemo1);
-        log.info("Product successfully added to cart from Homepage: " + basePage.getModalProductName());
+        homePage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        Assert.assertEquals(homePage.getProductAddedModule().getModalH2(), ConstantsMessages.productAddedSuccessfullyTitle);
+        Assert.assertEquals(homePage.getProductAddedModule().getModalProductName(),
+                ConstantsMessages.productNameSKUDemo1);
+        log.info("Product successfully added to cart from Homepage: " +
+                homePage.getProductAddedModule().getModalProductName());
 
         //Close Product Added modal and check number of items displayed in header
-        basePage.clickOnContinueShoppingBtn();
-        Assert.assertEquals(basePage.getCartItemNoTxt(), ConstantsMessages.cartItem1Product);
-        log.info("Shopping cart contains " + basePage.getCartItemNoTxt());
+        homePage.getProductAddedModule().clickOnContinueShoppingBtn();
+        Assert.assertEquals(homePage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem1Product);
+        log.info("Shopping cart contains " + homePage.getHeaderModule().getCartItemNoTxt());
 
         //Check item displayed in shopping cart dropdown from header
-        basePage.hoverOverShoppingCartBlock();
-        Assert.assertEquals(basePage.countCartRows(), 1, "Incorrect number of products in cart");
-        Assert.assertEquals(basePage.getCartProductTitle(), ConstantsMessages.productNameSKUDemo1);
-        Assert.assertTrue(basePage.getProductSize().contains(ConstantsMessages.productSizeS));
-        log.info("Expected product is displayed in Shopping cart dropdown from header: " + basePage.getCartItems());
+        homePage.getHeaderModule().hoverOverShoppingCartBlock();
+        Assert.assertEquals(homePage.getHeaderModule().countCartRows(), 1, "Incorrect number of products in cart");
+        Assert.assertEquals(homePage.getHeaderModule().getCartProductTitle(), ConstantsMessages.productNameSKUDemo1);
+        Assert.assertTrue(homePage.getHeaderModule().getProductSize().contains(ConstantsMessages.productSizeS));
+        log.info("Expected product is displayed in Shopping cart dropdown from header: " +
+                homePage.getHeaderModule().getCartItems());
     }
 
     @Test
@@ -49,45 +51,53 @@ public class AddProductToCartTest extends BaseTest {
         //Open main URL
         openURL(ConstantsURLs.baseURL);
 
-        //Navigate to Women page
-        BasePage basePage = new BasePage(driver, log);
-        WomenPage womenPage = basePage.openWomenPage();
-        Assert.assertTrue(basePage.getCurrentPageH1().contains(ConstantsMessages.womenPageH1));
-        log.info("Women page is opened");
+        //Navigate to Category page -> Women page
+        HomePage homePage = new HomePage(driver, log);
+        CategoryPage categoryPage = homePage.getHeaderModule().openWomenPage();
+        Assert.assertTrue(categoryPage.getCurrentPageTitle().contains(ConstantsMessages.womenPageTitle));
+        log.info("Navigated to Category page");
 
         //Change to layout to list view
-        basePage.changeLayoutToListView();
+        categoryPage.getProductListModule().changeLayoutToListView();
 
-        //Adding product to cart from Women page list view
+        //Adding product to cart from Category page list view
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
-        womenPage.addFirstProductToCart();
-        basePage.waitForProductAddedModalToBeDisplayed();
-        Assert.assertEquals(basePage.getModalH2(), ConstantsMessages.productAddedSuccessfullyH2);
-        Assert.assertEquals(basePage.getModalProductName(), ConstantsMessages.productNameSKUDemo2);
-        log.info("Product successfully added to cart from Women page: " + basePage.getModalProductName());
+        categoryPage.addFirstProductToCart();
+        categoryPage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        Assert.assertEquals(categoryPage.getProductAddedModule().getModalH2(),
+                ConstantsMessages.productAddedSuccessfullyTitle);
+        Assert.assertEquals(categoryPage.getProductAddedModule().getModalProductName(),
+                ConstantsMessages.productNameSKUDemo2);
+        log.info("Product successfully added to cart from Women page: " +
+                categoryPage.getProductAddedModule().getModalProductName());
 
         //Close Product Added modal and check number of items displayed in header
-        basePage.clickOnContinueShoppingBtn();
-        Assert.assertEquals(basePage.getCartItemNoTxt(), ConstantsMessages.cartItem1Product);
-        log.info("Shopping cart contains " + basePage.getCartItemNoTxt());
+        categoryPage.getProductAddedModule().clickOnContinueShoppingBtn();
+        Assert.assertEquals(categoryPage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem1Product);
+        log.info("Shopping cart contains " + categoryPage.getHeaderModule().getCartItemNoTxt());
 
         //Adding product to cart again from Women page list view
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
-        womenPage.addSecondProductToCart();
-        basePage.waitForProductAddedModalToBeDisplayed();
-        Assert.assertEquals(basePage.getModalH2(), ConstantsMessages.productAddedSuccessfullyH2);
-        Assert.assertEquals(basePage.getModalProductName(), ConstantsMessages.productNameSKUDemo1);
-        log.info("Product successfully added to cart from Women page: " + basePage.getModalProductName());
+        categoryPage.addSecondProductToCart();
+        categoryPage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        Assert.assertEquals(categoryPage.getProductAddedModule().getModalH2(),
+                ConstantsMessages.productAddedSuccessfullyTitle);
+        Assert.assertEquals(categoryPage.getProductAddedModule().getModalProductName(),
+                ConstantsMessages.productNameSKUDemo1);
+        log.info("Product successfully added to cart from Women page: " +
+                categoryPage.getProductAddedModule().getModalProductName());
 
         //Close Product Added modal and check number of items displayed in header
-        basePage.clickOnContinueShoppingBtn();
-        Assert.assertEquals(basePage.getCartItemNoTxt(), ConstantsMessages.cartItem2Products);
-        log.info("Shopping cart contains " + basePage.getCartItemNoTxt());
+        categoryPage.getProductAddedModule().clickOnContinueShoppingBtn();
+        Assert.assertEquals(categoryPage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem2Products);
+        log.info("Shopping cart contains " + categoryPage.getHeaderModule().getCartItemNoTxt());
 
         //Check items are displayed in shopping cart dropdown from header
-        basePage.hoverOverShoppingCartBlock();
-        Assert.assertEquals(basePage.countCartRows(), 2, "Incorrect number of product rows in cart");
-        log.info("Expected products are displayed in Shopping cart dropdown from header: " + basePage.getCartItems());
+        categoryPage.getHeaderModule().hoverOverShoppingCartBlock();
+        Assert.assertEquals(categoryPage.getHeaderModule().countCartRows(), 2,
+                "Incorrect number of product rows in cart");
+        log.info("Expected products are displayed in Shopping cart dropdown from header: " +
+                categoryPage.getHeaderModule().getCartItems());
     }
 
     @Test
@@ -98,33 +108,37 @@ public class AddProductToCartTest extends BaseTest {
         openURL(ConstantsURLs.baseURL);
 
         //Open Quick View Modal
-        BasePage basePage = new BasePage(driver, log);
-        basePage.openQuickViewModalForDemo1();
-        Assert.assertEquals(basePage.getProductDemo1H1(), ConstantsMessages.productNameSKUDemo1, "H1 does not correspond");
+        HomePage homePage = new HomePage(driver, log);
+        homePage.navigateToProductPageDemo1();
+        Assert.assertEquals(homePage.getProductDetailsModule().getProductDemo1Title(),
+                ConstantsMessages.productNameSKUDemo1, "H1 does not correspond");
 
         //Increase product quantity, choose size M and then add to cart
-        basePage.updateProductQuantity(5);
-        basePage.decreaseProductQuantity();
-        basePage.selectProductSize(1);
-        Assert.assertEquals(basePage.getSelectedProductSize(), "M");
-        basePage.addProductToCart();
+        homePage.getProductDetailsModule().updateProductQuantity(5);
+        homePage.getProductDetailsModule().decreaseProductQuantity();
+        homePage.getProductDetailsModule().selectProductSize(1);
+        Assert.assertEquals(homePage.getProductDetailsModule().getSelectedProductSize(), "M");
+        homePage.getProductDetailsModule().addProductToCart();
 
         //Wait for Product Added modal to be displayed and check that correct product was added to cart
-        basePage.waitForProductAddedModalToBeDisplayed();
-        Assert.assertEquals(basePage.getModalH2(), ConstantsMessages.productAddedSuccessfullyH2);
-        Assert.assertEquals(basePage.getModalProductName(), ConstantsMessages.productNameSKUDemo1);
-        log.info("Product successfully added to cart from Quick View modal: " + basePage.getModalProductName());
+        homePage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        Assert.assertEquals(homePage.getProductAddedModule().getModalH2(), ConstantsMessages.productAddedSuccessfullyTitle);
+        Assert.assertEquals(homePage.getProductAddedModule().getModalProductName(), ConstantsMessages.productNameSKUDemo1);
+        log.info("Product successfully added to cart from Quick View modal: " +
+                homePage.getProductAddedModule().getModalProductName());
 
         //Close Product Added modal and check number of items displayed in header
-        basePage.clickOnContinueShoppingBtn();
-        Assert.assertEquals(basePage.getCartItemNoTxt(), ConstantsMessages.cartItem4Products);
-        log.info("Shopping cart contains " + basePage.getCartItemNoTxt());
+        homePage.getProductAddedModule().clickOnContinueShoppingBtn();
+        Assert.assertEquals(homePage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem4Products);
+        log.info("Shopping cart contains " + homePage.getHeaderModule().getCartItemNoTxt());
 
         //Check items are displayed in shopping cart dropdown from header and size is correct
-        basePage.hoverOverShoppingCartBlock();
-        Assert.assertEquals(basePage.countCartRows(), 1, "Incorrect number of product rows in cart");
-        Assert.assertTrue(basePage.getProductSize().contains(ConstantsMessages.productSizeM));
-        log.info("Expected products are displayed in Shopping cart dropdown from header: " + basePage.getCartItems());
+        homePage.getHeaderModule().hoverOverShoppingCartBlock();
+        Assert.assertEquals(homePage.getHeaderModule().countCartRows(), 1,
+                "Incorrect number of product rows in cart");
+        Assert.assertTrue(homePage.getHeaderModule().getProductSize().contains(ConstantsMessages.productSizeM));
+        log.info("Expected products are displayed in Shopping cart dropdown from header: " +
+                homePage.getHeaderModule().getCartItems());
     }
 
     @Test
@@ -136,35 +150,42 @@ public class AddProductToCartTest extends BaseTest {
 
         //Navigate to Demo1 Product Page
         HomePage homePage = new HomePage(driver, log);
-        homePage.navigateToProductPageDemo1();
-        BasePage basePage = new BasePage(driver, log);
-        Assert.assertEquals(basePage.getProductDemo1H1(), ConstantsMessages.productNameSKUDemo1, "H1 does not correspond");
+        ProductDetailsPage productDetailsPage = homePage.navigateToProductPageDemo1();
+        Assert.assertEquals(productDetailsPage.getProductDetailsModule().getProductDemo1Title(),
+                ConstantsMessages.productNameSKUDemo1, "H1 does not correspond");
 
         //Increase quantity, update product size and add it to cart
-        basePage.increaseProductQuantity();
-        basePage.selectProductSize("L");
-        Assert.assertEquals(basePage.getSelectedProductSize(), "L");
-        basePage.addProductToCart();
+        productDetailsPage.getProductDetailsModule().increaseProductQuantity();
+        productDetailsPage.getProductDetailsModule().selectProductSize("L");
+        Assert.assertEquals(productDetailsPage.getProductDetailsModule().getSelectedProductSize(), "L");
+        productDetailsPage.getProductDetailsModule().addProductToCart();
 
         //Wait for Product Added modal to be displayed and check that correct product was added to cart
-        basePage.waitForProductAddedModalToBeDisplayed();
-        Assert.assertEquals(basePage.getModalH2(), ConstantsMessages.productAddedSuccessfullyH2);
-        Assert.assertEquals(basePage.getModalProductName(), ConstantsMessages.productNameSKUDemo1);
-        log.info("Product successfully added to cart from Product page: " + basePage.getModalProductName());
-        Assert.assertTrue(basePage.getProductAddedModalAttributes().contains(ConstantsMessages.productSizeL));
-        log.info("Product added in size: " + basePage.getProductAddedModalAttributes());
-        Assert.assertEquals(basePage.getProductAddedModalQuantity(), "2");
-        log.info("Product quantity added: " + basePage.getProductAddedModalQuantity());
+        productDetailsPage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        Assert.assertEquals(productDetailsPage.getProductAddedModule().getModalH2(),
+                ConstantsMessages.productAddedSuccessfullyTitle);
+        Assert.assertEquals(productDetailsPage.getProductAddedModule().getModalProductName(),
+                ConstantsMessages.productNameSKUDemo1);
+        log.info("Product successfully added to cart from Product page: "
+                + productDetailsPage.getProductAddedModule().getModalProductName());
+        Assert.assertTrue(productDetailsPage.getProductAddedModule().getProductAddedModalAttributes()
+                .contains(ConstantsMessages.productSizeL));
+        log.info("Product added in size: " + productDetailsPage.getProductAddedModule().getProductAddedModalAttributes());
+        Assert.assertEquals(productDetailsPage.getProductAddedModule().getProductAddedModalQuantity(), "2");
+        log.info("Product quantity added: " + productDetailsPage.getProductAddedModule().getProductAddedModalQuantity());
 
         //Close Product Added modal and check number of items displayed in header
-        basePage.clickOnContinueShoppingBtn();
-        Assert.assertEquals(basePage.getCartItemNoTxt(), ConstantsMessages.cartItem2Products);
-        log.info("Shopping cart contains " + basePage.getCartItemNoTxt());
+        productDetailsPage.getProductAddedModule().clickOnContinueShoppingBtn();
+        Assert.assertEquals(productDetailsPage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem2Products);
+        log.info("Shopping cart contains " + productDetailsPage.getHeaderModule().getCartItemNoTxt());
 
         //Check items are displayed in shopping cart dropdown from header and size is correct
-        basePage.hoverOverShoppingCartBlock();
-        Assert.assertEquals(basePage.countCartRows(), 1, "Incorrect number of product rows in cart");
-        log.info("Expected products are displayed in Shopping cart dropdown from header: " + basePage.getCartItems());
-        log.info("Expected product size is displayed in Shopping cart dropdown from header: " + basePage.getProductSize());
+        productDetailsPage.getHeaderModule().hoverOverShoppingCartBlock();
+        Assert.assertEquals(productDetailsPage.getHeaderModule().countCartRows(), 1,
+                "Incorrect number of product rows in cart");
+        log.info("Expected products are displayed in Shopping cart dropdown from header: " +
+                productDetailsPage.getHeaderModule().getCartItems());
+        log.info("Expected product size is displayed in Shopping cart dropdown from header: " +
+                productDetailsPage.getHeaderModule().getProductSize());
     }
 }
