@@ -7,11 +7,11 @@ import pages.BasePage;
 
 public class ProductAddedModule extends BasePage {
 
-    private By productAddedModalH2 = By.cssSelector(".layer_cart_product h2:nth-child(2)");
-    private By productAddedModalProductName = By.cssSelector(".layer_cart_product .product-name");
-    private By productAddedModalContinueShoppingBtn = By.cssSelector(".clearfix .continue");
-    private By productAddedModalAttributes = By.id("layer_cart_product_attributes");
-    private By productAddedModalQuantity = By.id("layer_cart_product_quantity");
+    private By successTitle = By.cssSelector(".layer_cart_product h2:nth-child(2)");
+    private By productName = By.cssSelector(".layer_cart_product .product-name");
+    private By continueShoppingBtn = By.cssSelector(".clearfix .continue");
+    private By productAttributes = By.id("layer_cart_product_attributes");
+    private By productQuantity = By.id("layer_cart_product_quantity");
 
     public ProductAddedModule(WebDriver driver, Logger log) {
         super(driver, log);
@@ -25,31 +25,31 @@ public class ProductAddedModule extends BasePage {
     }
 
     public void waitForProductAddedModalToBeDisplayed() {
-        waitForModalContentToBeDisplayed(productAddedModalH2);
+        waitForModalContentToBeDisplayed(successTitle);
     }
 
-    public String getModalH2() {
-        String modalH2 = getText(productAddedModalH2);
-        return modalH2;
+    public String getModalSuccessTitle() {
+        String modalSuccessTitle = getText(successTitle);
+        return modalSuccessTitle;
     }
 
     public String getModalProductName() {
-        String modalProductName = getText(productAddedModalProductName);
+        String modalProductName = getText(productName);
         return modalProductName;
     }
 
     public void clickOnContinueShoppingBtn() {
         log.info("Clicking on Continue Shopping button from Product Added Modal");
-        find(productAddedModalContinueShoppingBtn).click();
+        find(continueShoppingBtn).click();
     }
 
-    public String getProductAddedModalAttributes() {
-        String attributes = find(productAddedModalAttributes).getText();
+    public String getProductAttributes() {
+        String attributes = find(productAttributes).getText();
         return attributes;
     }
 
-    public String getProductAddedModalQuantity() {
-        String quantity = find(productAddedModalQuantity).getText();
+    public String getProductQuantity() {
+        String quantity = find(productQuantity).getText();
         return quantity;
     }
 }

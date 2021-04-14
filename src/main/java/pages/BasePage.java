@@ -23,6 +23,7 @@ public class BasePage {
 
     /**
      * Find element using given locator
+     *
      * @param locator
      * @return Webelement
      */
@@ -32,6 +33,7 @@ public class BasePage {
 
     /**
      * Click on element with given locator
+     *
      * @param locator
      */
     protected void click(By locator) {
@@ -40,6 +42,7 @@ public class BasePage {
 
     /**
      * Clears input and types given text into element with given locator
+     *
      * @param text
      * @param locator
      */
@@ -55,6 +58,7 @@ public class BasePage {
 
     /**
      * Get URL of current page from browser
+     *
      * @return URL String
      */
     public String getCurrentUrl() {
@@ -63,14 +67,17 @@ public class BasePage {
 
     /**
      * Get H1 of current page
+     *
      * @return String page title
      */
     public String getCurrentPageTitle() {
+        waitForVisibility(pageTitle, 10);
         return find(pageTitle).getText();
     }
 
     /**
      * Press Key on locator
+     *
      * @param locator
      * @param key
      */
@@ -81,6 +88,7 @@ public class BasePage {
 
     /**
      * Perform mouse hover over element
+     *
      * @param element
      */
     protected void hoverOverElement(By element) {
@@ -90,6 +98,7 @@ public class BasePage {
 
     /**
      * Waits for By locator's visibility
+     *
      * @param locator
      * @param defaultTimeout
      */

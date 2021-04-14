@@ -6,7 +6,6 @@ import constants.ConstantsMessages;
 import constants.ConstantsURLs;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.BasePage;
 import pages.HomePage;
 import pages.LoginPage;
 import pages.MyAccountPage;
