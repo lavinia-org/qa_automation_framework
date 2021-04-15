@@ -27,7 +27,7 @@ public class AddProductToCartTest extends BaseTest {
         homePage.addProductToCart();
 
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
-        homePage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        homePage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(homePage.getProductAddedModule().getModalSuccessTitle(), ConstantsMessages.productAddedSuccessfullyTitle);
         Assert.assertEquals(homePage.getProductAddedModule().getModalProductName(),
                 productNameSKUDemo1);
@@ -67,7 +67,7 @@ public class AddProductToCartTest extends BaseTest {
         //Adding product to cart from Category page list view
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
         categoryPage.addFirstProductToCart();
-        categoryPage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        categoryPage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(categoryPage.getProductAddedModule().getModalSuccessTitle(),
                 ConstantsMessages.productAddedSuccessfullyTitle);
         Assert.assertEquals(categoryPage.getProductAddedModule().getModalProductName(),
@@ -83,7 +83,7 @@ public class AddProductToCartTest extends BaseTest {
         //Adding product to cart again from Women page list view
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
         categoryPage.addSecondProductToCart();
-        categoryPage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        categoryPage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(categoryPage.getProductAddedModule().getModalSuccessTitle(),
                 ConstantsMessages.productAddedSuccessfullyTitle);
         Assert.assertEquals(categoryPage.getProductAddedModule().getModalProductName(),
@@ -126,7 +126,7 @@ public class AddProductToCartTest extends BaseTest {
         homePage.getProductDetailsModule().addProductToCart();
 
         //Wait for Product Added modal to be displayed and check that correct product was added to cart
-        homePage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        homePage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(homePage.getProductAddedModule().getModalSuccessTitle(), ConstantsMessages.productAddedSuccessfullyTitle);
         Assert.assertEquals(homePage.getProductAddedModule().getModalProductName(), productNameSKUDemo1);
         log.info("Product successfully added to cart from Quick View modal: " +
@@ -167,7 +167,7 @@ public class AddProductToCartTest extends BaseTest {
         productDetailsPage.getProductDetailsModule().addProductToCart();
 
         //Wait for Product Added modal to be displayed and check that correct product was added to cart
-        productDetailsPage.getProductAddedModule().waitForProductAddedModalToBeDisplayed();
+        productDetailsPage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(productDetailsPage.getProductAddedModule().getModalSuccessTitle(),
                 ConstantsMessages.productAddedSuccessfullyTitle);
         Assert.assertEquals(productDetailsPage.getProductAddedModule().getModalProductName(),

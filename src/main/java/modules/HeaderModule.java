@@ -120,7 +120,6 @@ public class HeaderModule extends BasePage {
 
     /**
      * Iterates over main navigation's categories and clicks on the one given by String parameter
-     *
      * @param page
      * @return Category page
      */

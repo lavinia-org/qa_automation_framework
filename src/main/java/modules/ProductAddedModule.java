@@ -17,15 +17,11 @@ public class ProductAddedModule extends BasePage {
         super(driver, log);
     }
 
-    protected void waitForModalContentToBeDisplayed(By locator) {
+    public void waitForModalContentToBeDisplayed() {
         log.info("Waiting for modal to be displayed...");
-        waitForVisibility(locator, 10);
-        checkIfElementIsDisplayed(locator);
-        log.info("Modal content displayed!");
-    }
-
-    public void waitForProductAddedModalToBeDisplayed() {
-        waitForModalContentToBeDisplayed(successTitle);
+        waitForVisibility(successTitle, 10);
+        checkIfElementIsDisplayed(successTitle);
+        log.info("Modal content is displayed!");
     }
 
     public String getModalSuccessTitle() {
