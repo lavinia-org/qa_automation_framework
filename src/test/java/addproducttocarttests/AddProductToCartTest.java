@@ -11,6 +11,7 @@ import pages.HomePage;
 import pages.ProductDetailsPage;
 
 import static constants.ConstantsMessages.productNameSKUDemo1;
+import static constants.ConstantsMessages.productNameSKUDemo2;
 
 public class AddProductToCartTest extends BaseTest {
 
@@ -24,7 +25,7 @@ public class AddProductToCartTest extends BaseTest {
 
         //Adding product to cart from Homepage grid view
         HomePage homePage = new HomePage(driver, log);
-        homePage.addProductToCart();
+        homePage.getProductListModule().addProductToCartFromGridView("Faded Short Sleeve T-shirts");
 
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
         homePage.getProductAddedModule().waitForModalContentToBeDisplayed();
@@ -49,7 +50,7 @@ public class AddProductToCartTest extends BaseTest {
     }
 
     @Test
-    public void addTwoProductsToCartFromListView() {
+    public void addTwoProductsToCartFromListView() throws InterruptedException {
         log.info("Starting Add Product To Cart from List View Test");
 
         //Open main URL
@@ -66,7 +67,7 @@ public class AddProductToCartTest extends BaseTest {
 
         //Adding product to cart from Category page list view
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
-        categoryPage.addFirstProductToCart();
+        categoryPage.getProductListModule().addProductToCartFromListView("Blouse");
         categoryPage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(categoryPage.getProductAddedModule().getModalSuccessTitle(),
                 ConstantsMessages.productAddedSuccessfullyTitle);
@@ -74,6 +75,7 @@ public class AddProductToCartTest extends BaseTest {
                 ConstantsMessages.productNameSKUDemo2);
         log.info("Product successfully added to cart from Women page: " +
                 categoryPage.getProductAddedModule().getModalProductName());
+        Thread.sleep(3000);
 
         //Close Product Added modal and check number of items displayed in header
         categoryPage.getProductAddedModule().clickOnContinueShoppingBtn();
@@ -82,7 +84,7 @@ public class AddProductToCartTest extends BaseTest {
 
         //Adding product to cart again from Women page list view
         //Waiting for Product Added modal to be displayed and check if correct product was added to cart
-        categoryPage.addSecondProductToCart();
+        categoryPage.getProductListModule().addProductToCartFromListView("Faded Short Sleeve T-shirts");
         categoryPage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(categoryPage.getProductAddedModule().getModalSuccessTitle(),
                 ConstantsMessages.productAddedSuccessfullyTitle);
@@ -90,11 +92,13 @@ public class AddProductToCartTest extends BaseTest {
                 productNameSKUDemo1);
         log.info("Product successfully added to cart from Women page: " +
                 categoryPage.getProductAddedModule().getModalProductName());
+        Thread.sleep(3000);
 
         //Close Product Added modal and check number of items displayed in header
         categoryPage.getProductAddedModule().clickOnContinueShoppingBtn();
         Assert.assertEquals(categoryPage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem2Products);
         log.info("Shopping cart contains " + categoryPage.getHeaderModule().getCartItemNoTxt());
+        Thread.sleep(3000);
 
         //Check items are displayed in shopping cart dropdown from header
         categoryPage.getHeaderModule().hoverOverShoppingCartBlock();
@@ -106,7 +110,7 @@ public class AddProductToCartTest extends BaseTest {
 
     @Test
     @Ignore
-    public void addProductToCartFromQuickView() {
+    public void addProductToCartFromQuickView() throws InterruptedException {
         log.info("Starting Add Product To Cart from Quick View Test");
 
         //Open main URL
@@ -114,13 +118,14 @@ public class AddProductToCartTest extends BaseTest {
 
         //Open Quick View Modal
         HomePage homePage = new HomePage(driver, log);
-        homePage.navigateToProductPageDemo1();
-        Assert.assertEquals(homePage.getProductDetailsModule().getProductDemo1Title(),
-                productNameSKUDemo1, "H1 does not correspond");
+        homePage.getProductListModule().openQuickViewModalFor("Blouse");
+        Assert.assertEquals(homePage.getProductDetailsModule().getProductName(),
+                productNameSKUDemo2, "Product name does not correspond");
 
         //Increase product quantity, choose size M and then add to cart
         homePage.getProductDetailsModule().updateProductQuantity(5);
         homePage.getProductDetailsModule().decreaseProductQuantity();
+        Assert.assertEquals(homePage.getProductDetailsModule().getProductQuantity(), "4");
         homePage.getProductDetailsModule().selectProductSize(1);
         Assert.assertEquals(homePage.getProductDetailsModule().getSelectedProductSize(), "M");
         homePage.getProductDetailsModule().addProductToCart();
@@ -128,7 +133,7 @@ public class AddProductToCartTest extends BaseTest {
         //Wait for Product Added modal to be displayed and check that correct product was added to cart
         homePage.getProductAddedModule().waitForModalContentToBeDisplayed();
         Assert.assertEquals(homePage.getProductAddedModule().getModalSuccessTitle(), ConstantsMessages.productAddedSuccessfullyTitle);
-        Assert.assertEquals(homePage.getProductAddedModule().getModalProductName(), productNameSKUDemo1);
+        Assert.assertEquals(homePage.getProductAddedModule().getModalProductName(), productNameSKUDemo2);
         log.info("Product successfully added to cart from Quick View modal: " +
                 homePage.getProductAddedModule().getModalProductName());
 
@@ -156,8 +161,9 @@ public class AddProductToCartTest extends BaseTest {
 
         //Navigate to Demo1 Product Page
         HomePage homePage = new HomePage(driver, log);
-        ProductDetailsPage productDetailsPage = homePage.navigateToProductPageDemo1();
-        Assert.assertEquals(productDetailsPage.getProductDetailsModule().getProductDemo1Title(),
+        ProductDetailsPage productDetailsPage = homePage.getProductListModule()
+                .navigateToProductPage("Faded Short Sleeve T-shirts");
+        Assert.assertEquals(productDetailsPage.getProductDetailsModule().getProductName(),
                 productNameSKUDemo1, "H1 does not correspond");
 
         //Increase quantity, update product size and add it to cart

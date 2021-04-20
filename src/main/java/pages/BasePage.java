@@ -9,12 +9,16 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.Iterator;
+import java.util.List;
+
 public class BasePage {
 
     protected WebDriver driver;
     protected Logger log;
 
     private By pageTitle = By.className("page-heading");
+    private By productBlock = By.cssSelector(".product_list .product-container");
 
     public BasePage(WebDriver driver, Logger log) {
         this.driver = driver;
@@ -88,12 +92,16 @@ public class BasePage {
 
     /**
      * Perform mouse hover over element
-     *
      * @param element
      */
     protected void hoverOverElement(By element) {
         Actions action = new Actions(driver);
         action.moveToElement(find(element)).build().perform();
+    }
+
+    protected void hoverOverElement(WebElement element) {
+        Actions action = new Actions(driver);
+        action.moveToElement(element).build().perform();
     }
 
     /**
@@ -133,5 +141,31 @@ public class BasePage {
 
     protected void switchToFrame(By iFrameLocator) {
         driver.switchTo().frame(find(iFrameLocator));
+    }
+
+    /**
+     * Takes all product blocks from Product List section, adds them to a list and iterates over.
+     * Stops at the product specified as a parameter and returns it
+     * @param product
+     * @return chosen product
+     */
+    protected WebElement chooseItem(String product) {
+        List<WebElement> products = driver.findElements(productBlock);
+        Iterator<WebElement> itr = products.iterator();
+        WebElement chosenItem = null;
+
+        while(itr.hasNext()) {
+            WebElement item = itr.next();
+            if (item.getText().contains(product)&&item.isDisplayed()) {
+                chosenItem = item;
+                break;
+            }
+        }
+        return chosenItem;
+    }
+
+    protected void checkIfDisplayed(By locator) {
+        waitForVisibility(locator, 10);
+        find(locator).isDisplayed();
     }
 }

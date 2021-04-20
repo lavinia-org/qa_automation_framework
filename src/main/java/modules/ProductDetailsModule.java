@@ -27,12 +27,12 @@ public class ProductDetailsModule extends BasePage {
     }
 
     public void increaseProductQuantity() {
-        log.info("Increasing product quantity");
+        log.info("Increasing product quantity by 1");
         find(increaseQuantityBtn).click();
     }
 
     public void decreaseProductQuantity() {
-        log.info("Decreasing product quantity");
+        log.info("Decreasing product quantity by 1");
         find(decreaseQuantityBtn).click();
     }
 
@@ -43,9 +43,8 @@ public class ProductDetailsModule extends BasePage {
 
     public String getProductQuantity() {
         waitForVisibility(quantityField, 10);
-        Assert.assertTrue(find(quantityField).isDisplayed());
-        String productQuantity = find(quantityField).getText();
-
+        String productQuantity = find(quantityField).getAttribute("value");
+        log.info("Product quantity is now: " + productQuantity);
         return productQuantity;
     }
 
@@ -73,9 +72,9 @@ public class ProductDetailsModule extends BasePage {
         return selectedOption;
     }
 
-    public String getProductDemo1Title() {
+    public String getProductName() {
         waitForVisibility(productName, 10);
-        String modalDemo1H1 = getProductTitle(productName);
-        return modalDemo1H1;
+        String name = getProductTitle(productName);
+        return name;
     }
 }

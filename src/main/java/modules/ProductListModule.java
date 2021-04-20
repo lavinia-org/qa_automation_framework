@@ -3,13 +3,16 @@ package modules;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import pages.BasePage;
+import pages.ProductDetailsPage;
 
 public class ProductListModule extends BasePage {
 
     private By quickViewFrame = By.className("fancybox-iframe");
-    private By quickViewProductSKUDemo1 = By.cssSelector("#homefeatured li:nth-child(1) a.quick-view");
-    private By imageForProductSKUDemo1 = By.cssSelector("img[title='Faded Short Sleeve T-shirts']");
+    private By quickViewButton = By.cssSelector(".product_list >li a.quick-view");
+    private By addToCartButton = By.cssSelector(".button-container > a.ajax_add_to_cart_button");
+    private By moreButton = By.cssSelector(".button-container > a.lnk_view");
     private By productName = By.cssSelector(".product .pb-center-column >h1");
     private By listView = By.id("list");
 
@@ -17,41 +20,43 @@ public class ProductListModule extends BasePage {
         super(driver, log);
     }
 
-    /**
-     * Hovers over a product to show QuickView link and clicks on it
-     * Switches to QuickView iFrame and waits for H1 to be visible - checks if it is
-     *
-     * @param hoverLocator
-     * @param clickLocator
-     * @param iFrameLocator
-     * @param H1Locator
-     */
-    protected void openQuickViewModal(By hoverLocator, By clickLocator, By iFrameLocator, By H1Locator) {
-        hoverOverElement(hoverLocator);
-        click(clickLocator);
-        switchToFrame(iFrameLocator);
-        waitForVisibility(H1Locator, 10);
-        find(H1Locator).isDisplayed();
-        log.info("Opened Quick View Modal for Product: " + find(H1Locator).getText());
+    public void openQuickViewModalFor(String product) {
+        log.info("Opening Quick View modal for: " + product);
+        WebElement productBlock = chooseItem(product);
+        hoverOverElement(productBlock);
+
+        WebElement button = productBlock.findElement(quickViewButton);
+        button.click();
+
+        switchToFrame(quickViewFrame);
+        checkIfDisplayed(productName);
+        log.info("Opened Quick View Modal for Product: " + find(productName).getText());
     }
 
-    public void addProductToCartFromGridView(By hoverLocator, By clickLocator) {
-        waitForVisibility(hoverLocator, 10);
-        hoverOverElement(hoverLocator);
-        click(clickLocator);
+    public void addProductToCartFromGridView(String product) {
+        WebElement productBlock = chooseItem(product);
+        hoverOverElement(productBlock);
+
+        WebElement button = productBlock.findElement(addToCartButton);
+        button.click();
+        log.info("Product added to cart: " + product);
     }
 
-    public void addProductToCartFromListView(By locator) {
-        click(locator);
+    public void addProductToCartFromListView(String product) {
+        WebElement productBlock = chooseItem(product);
+        WebElement button = productBlock.findElement(addToCartButton);
+        button.click();
+        log.info("Product added to cart: " + product);
     }
 
-    public void navigateToProductPage(By hoverLocator, By clickLocator) {
-        hoverOverElement(hoverLocator);
-        click(clickLocator);
-    }
+    public ProductDetailsPage navigateToProductPage(String product) {
+        WebElement productBlock = chooseItem(product);
+        hoverOverElement(productBlock);
 
-    public void openQuickViewModalForDemo1() {
-        openQuickViewModal(imageForProductSKUDemo1, quickViewProductSKUDemo1, quickViewFrame, productName);
+        WebElement button = productBlock.findElement(moreButton);
+        button.click();
+        log.info("Navigate to product's page: " + product);
+        return new ProductDetailsPage(driver, log);
     }
 
     public void changeLayoutToListView() {
