@@ -3,7 +3,6 @@ package pages;
 import modules.HeaderModule;
 import modules.ProductAddedModule;
 import modules.ProductDetailsModule;
-import modules.ProductListModule;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 

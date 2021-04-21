@@ -4,7 +4,6 @@ import base.BaseTest;
 import constants.ConstantsMessages;
 import constants.ConstantsURLs;
 import org.testng.Assert;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import pages.CategoryPage;
 import pages.HomePage;
@@ -16,7 +15,6 @@ import static constants.ConstantsMessages.productNameSKUDemo2;
 public class AddProductToCartTest extends BaseTest {
 
     @Test
-    @Ignore
     public void addProductToCartFromGridView() {
         log.info("Starting Add Product To Cart from Grid View Test");
 
@@ -109,7 +107,6 @@ public class AddProductToCartTest extends BaseTest {
     }
 
     @Test
-    @Ignore
     public void addProductToCartFromQuickView() throws InterruptedException {
         log.info("Starting Add Product To Cart from Quick View Test");
 
@@ -152,7 +149,6 @@ public class AddProductToCartTest extends BaseTest {
     }
 
     @Test
-    @Ignore
     public void addProductToCartFromProductPage() throws InterruptedException {
         log.info("Starting Add Product To Cart from Product page Test");
 

@@ -41,7 +41,7 @@ public class ProductDetailsModule extends BasePage {
     }
 
     public String getProductQuantity() {
-        waitForVisibility(quantityField, 10);
+        fluentWaitForVisibility(productName, 10, 1);
         String productQuantity = find(quantityField).getAttribute("value");
         log.info("Product quantity is now: " + productQuantity);
         return productQuantity;
@@ -72,7 +72,7 @@ public class ProductDetailsModule extends BasePage {
     }
 
     public String getProductName() {
-        waitForVisibility(productName, 10);
+        fluentWaitForVisibility(productName, 10, 1);
         String name = getProductTitle(productName);
         return name;
     }
