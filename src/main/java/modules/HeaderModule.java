@@ -18,8 +18,6 @@ public class HeaderModule extends BasePage {
     private By signInLink = By.className("login");
     private By signOutLink = By.className("logout");
     private By usernameLink = By.className("account");
-    private By contactUsLink = By.id("contact-link");
-    private By headerLogo = By.id("header_logo");
     private By shoppingCartQuantity = By.cssSelector(".shopping_cart span.ajax_cart_quantity");
     private By shoppingCartProductTxt = By.cssSelector(".shopping_cart span.ajax_cart_product_txt");
     private By shoppingCartProductsTxt = By.cssSelector(".shopping_cart span.ajax_cart_product_txt_s");
@@ -35,7 +33,6 @@ public class HeaderModule extends BasePage {
 
     /**
      * Clicks on Sign In link from page header
-     *
      * @return LoginPage
      */
     public LoginPage clickOnSignInLink() {
@@ -46,7 +43,6 @@ public class HeaderModule extends BasePage {
 
     /**
      * Checks if Sign Out link is displayed after user logs in
-     *
      * @return boolean
      */
     public boolean isSignOutLinkVisible() {
@@ -55,7 +51,6 @@ public class HeaderModule extends BasePage {
 
     /**
      * Gets username from header
-     *
      * @return String username text
      */
     public String getUsername() {
@@ -72,7 +67,6 @@ public class HeaderModule extends BasePage {
 
     /**
      * This method checks if 'Product' or 'Products' is displayed near cart icon when user has items in cart
-     *
      * @return String number of cart products + 'Product' / 'Products' text
      */
     public String getCartItemNoTxt() {
@@ -104,7 +98,6 @@ public class HeaderModule extends BasePage {
     /**
      * Gets all cart items names and adds them to a list
      * Also prints out a log.info with every product name that the cart contains
-     *
      * @return list of products' names
      */
     public List<String> getCartItems() {
