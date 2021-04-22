@@ -6,18 +6,22 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
 
 public class BasePage {
 
     protected WebDriver driver;
     protected Logger log;
 
-    private By headerSignInLink = By.className("login");
-    private By headerSignOutLink = By.className("logout");
-    private By headerUsernameLink = By.className("account");
-    private By headerContactUsLink = By.id("contact-link");
-    private By headerLogo = By.id("header_logo");
-    private By pageH1 = By.className("page-heading");
+    private By pageTitle = By.className("page-heading");
+    private By productBlock = By.cssSelector(".product_list .product-container");
 
     public BasePage(WebDriver driver, Logger log) {
         this.driver = driver;
@@ -25,41 +29,8 @@ public class BasePage {
     }
 
     /**
-     * Clicks on Sign In link from page header
-     * @return LoginPage
-     */
-    public LoginPage clickOnSignInLink() {
-        log.info("Clicking on SignIn link");
-        click(headerSignInLink);
-        return new LoginPage(driver, log);
-    }
-
-    /**
-     * Checks if Sign Out link is displayed after user logs in
-     * @return boolean
-     */
-    public boolean isSignOutLinkVisible() {
-        return find(headerSignOutLink).isDisplayed();
-    }
-
-    /**
-     * Gets username from header
-     * @return String username text
-     */
-    public String getUsername() {
-        return find(headerUsernameLink).getText();
-    }
-
-    /**
-     * Clicks on Sign out link from header
-     */
-    public void signOutUser() {
-        log.info("Clicking on SignOut link");
-        find(headerSignOutLink).click();
-    }
-
-    /**
      * Find element using given locator
+     *
      * @param locator
      * @return Webelement
      */
@@ -69,6 +40,7 @@ public class BasePage {
 
     /**
      * Click on element with given locator
+     *
      * @param locator
      */
     protected void click(By locator) {
@@ -77,6 +49,7 @@ public class BasePage {
 
     /**
      * Clears input and types given text into element with given locator
+     *
      * @param text
      * @param locator
      */
@@ -85,8 +58,14 @@ public class BasePage {
         find(locator).sendKeys(text);
     }
 
+    protected void type(int i, By locator) {
+        find(locator).clear();
+        find(locator).sendKeys("" + i);
+    }
+
     /**
      * Get URL of current page from browser
+     *
      * @return URL String
      */
     public String getCurrentUrl() {
@@ -94,23 +73,18 @@ public class BasePage {
     }
 
     /**
-     *  Get title of current page
-     * @return String title
+     * Get H1 of current page
+     *
+     * @return String page title
      */
     public String getCurrentPageTitle() {
-        return driver.getTitle();
-    }
-
-    /**
-     * Get H1 of current page
-     * @return String H1
-     */
-    public String getCurrentPageH1() {
-        return find(pageH1).getText();
+        waitForVisibility(pageTitle, 10);
+        return find(pageTitle).getText();
     }
 
     /**
      * Press Key on locator
+     *
      * @param locator
      * @param key
      */
@@ -121,11 +95,98 @@ public class BasePage {
 
     /**
      * Perform mouse hover over element
+     *
      * @param element
      */
+    protected void hoverOverElement(By element) {
+        Actions action = new Actions(driver);
+        action.moveToElement(find(element)).build().perform();
+    }
+
     protected void hoverOverElement(WebElement element) {
-        log.info("Hover over " + element);
         Actions action = new Actions(driver);
         action.moveToElement(element).build().perform();
+    }
+
+    /**
+     * Waits for By locator's visibility
+     *
+     * @param locator
+     * @param defaultTimeout
+     */
+    public void waitForVisibility(By locator, int defaultTimeout) {
+        WebDriverWait wait = new WebDriverWait(driver, defaultTimeout);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    /**
+     * Waits for By locator's visibility, retries every 'pollingTime' seconds
+     *
+     * @param locator
+     * @param defaultTimeout
+     * @param pollingTime
+     */
+    public void fluentWaitForVisibility(By locator, int defaultTimeout, int pollingTime) {
+        FluentWait wait = new FluentWait(driver);
+        wait.withTimeout(defaultTimeout, TimeUnit.SECONDS);
+        wait.pollingEvery(defaultTimeout, TimeUnit.SECONDS);
+        wait.ignoring(NoSuchElementException.class);
+
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    public void checkIfElementIsDisplayed(By locator) {
+        find(locator).isDisplayed();
+    }
+
+    public String getText(By locator) {
+        return find(locator).getText();
+    }
+
+    protected String getTitleAttribute(By locator) {
+        WebElement element = find(locator);
+        String elementTitle = element.getAttribute("title");
+        return elementTitle;
+    }
+
+    protected String getAltAttribute(WebElement element) {
+        String elementTitle = element.getAttribute("alt");
+        return elementTitle;
+    }
+
+    protected String getProductTitle(By locator) {
+        String modalH1 = find(locator).getText();
+        return modalH1;
+    }
+
+    protected void switchToFrame(By iFrameLocator) {
+        driver.switchTo().frame(find(iFrameLocator));
+    }
+
+    /**
+     * Takes all product blocks from Product List section, adds them to a list and iterates over.
+     * Stops at the product specified as a parameter and returns it
+     *
+     * @param product
+     * @return chosen product
+     */
+    protected WebElement chooseItem(String product) {
+        List<WebElement> products = driver.findElements(productBlock);
+        Iterator<WebElement> itr = products.iterator();
+        WebElement chosenItem = null;
+
+        while (itr.hasNext()) {
+            WebElement item = itr.next();
+            if (item.getText().contains(product) && item.isDisplayed()) {
+                chosenItem = item;
+                break;
+            }
+        }
+        return chosenItem;
+    }
+
+    protected void checkIfDisplayed(By locator) {
+        waitForVisibility(locator, 10);
+        find(locator).isDisplayed();
     }
 }

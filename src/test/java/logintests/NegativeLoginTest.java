@@ -2,12 +2,11 @@ package logintests;
 
 import base.BaseTest;
 import base.CsvDataProviders;
-import constants.ConstantsCredentials;
 import constants.ConstantsMessages;
 import constants.ConstantsURLs;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.BasePage;
+import pages.HomePage;
 import pages.LoginPage;
 
 import java.util.Map;
@@ -26,16 +25,19 @@ public class NegativeLoginTest extends BaseTest {
 
         log.info("Starting negativeLogInTest #" + no + " for " + description);
 
-        BasePage basePage = new BasePage(driver, log);
+        //Open main URL
         openURL(ConstantsURLs.baseURL);
 
-        LoginPage loginPage = basePage.clickOnSignInLink();
+        //Navigate to Login page and sign in user
+        HomePage homePage = new HomePage(driver, log);
+        LoginPage loginPage = homePage.getHeaderModule().clickOnSignInLink();
         loginPage.logInUserSignInBtn(email, password);
 
+        //Check that error message is displayed and user is kept on Login page
         String message = loginPage.getLogInErrorMessageText();
         Assert.assertTrue(message.contains(expectedErrorMessage), "Message doesn't contain expected text.");
         log.info("Expected error message is displayed for this negative scenario");
-        Assert.assertEquals(loginPage.getCurrentPageH1(), ConstantsMessages.loginH1);
-        log.info("User is on " + loginPage.getCurrentPageH1() + " page");
+        Assert.assertEquals(loginPage.getCurrentPageTitle(), ConstantsMessages.loginPageTitle);
+        log.info("User is on " + loginPage.getCurrentPageTitle() + " page");
     }
 }
