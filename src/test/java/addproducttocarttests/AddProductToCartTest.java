@@ -73,7 +73,6 @@ public class AddProductToCartTest extends BaseTest {
                 ConstantsMessages.productNameSKUDemo2);
         log.info("Product successfully added to cart from Women page: " +
                 categoryPage.getProductAddedModule().getModalProductName());
-        Thread.sleep(3000);
 
         //Close Product Added modal and check number of items displayed in header
         categoryPage.getProductAddedModule().clickOnContinueShoppingBtn();
@@ -90,13 +89,11 @@ public class AddProductToCartTest extends BaseTest {
                 productNameSKUDemo1);
         log.info("Product successfully added to cart from Women page: " +
                 categoryPage.getProductAddedModule().getModalProductName());
-        Thread.sleep(3000);
 
         //Close Product Added modal and check number of items displayed in header
         categoryPage.getProductAddedModule().clickOnContinueShoppingBtn();
         Assert.assertEquals(categoryPage.getHeaderModule().getCartItemNoTxt(), ConstantsMessages.cartItem2Products);
         log.info("Shopping cart contains " + categoryPage.getHeaderModule().getCartItemNoTxt());
-        Thread.sleep(3000);
 
         //Check items are displayed in shopping cart dropdown from header
         categoryPage.getHeaderModule().hoverOverShoppingCartBlock();
